@@ -9,6 +9,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+#API_KEY = os.environ["ALPHAVANTAGE_API_KEY"]
+#API_KEY = os.environ.get("ALPHAVANTAGE_API_KEY")
 API_KEY = os.getenv("ALPHAVANTAGE_API_KEY", default="OOPS")
 
 symbol = "TSLA" # todo: ask for a user input
@@ -21,6 +23,11 @@ response = requests.get(request_url)
 print(type(response))
 print(response.status_code)
 print(type(response.text)) #> str
+
+# handle response errors:
+if "Error Message" in response.text:
+    print("OOPS couldn't find that symbol, please try again")
+    exit()
 
 parsed_response = json.loads(response.text)
 print(type(parsed_response)) #> dict
